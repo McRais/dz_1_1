@@ -11,10 +11,6 @@ function resolutionValidator(array:any) {
     return array.length !== new Set(array).size;
 }
 
-function isValidDate(dateString: string) {
-    return !isNaN(Date.parse(dateString));
-}
-
 export type VideoType = {
     id: number,
     title: string,
@@ -192,13 +188,13 @@ app.put('/videos/:id', (req: RequestWithBodyAndParams<{id:number},{
     let errors: ErrorType = {errorsMessages: []}
     let {title, author, availableResolutions, canBeDownloaded, minAgeRestriction, publicationDate} = req.body
 
-    if(title){if (!title.length || title.trim().length > 40){
+    if (!title || !title.length || title.trim().length > 40){
         errors.errorsMessages.push({message: 'Impossible title change', field: 'title'})
-    }}
-    if(author){if (!author.length || author.trim().length > 20){
+    }
+    if (!author || !author.length || author.trim().length > 20){
         errors.errorsMessages.push({message: 'Impossible author change', field: 'author'})
-    }}
-    if(availableResolutions){if (!availableResolutions.length || Array.isArray(availableResolutions) === false || resolutionValidator(availableResolutions)) {
+    }
+    if (!availableResolutions||!availableResolutions.length || Array.isArray(availableResolutions) === false || resolutionValidator(availableResolutions)) {
         errors.errorsMessages.push({message: 'Impossible resolution change, there must be at least one resolution. Or there is 2 resolutions with the same name', field: 'availableResolutions'})
     } else {
         for (let i = 0; i < availableResolutions.length; i++) {
@@ -206,11 +202,15 @@ app.put('/videos/:id', (req: RequestWithBodyAndParams<{id:number},{
                 errors.errorsMessages.push({message: 'There is no such resolution', field: 'availableResolutions'})
             }
         }
-    }}
-    if(minAgeRestriction){if (minAgeRestriction < 1 || minAgeRestriction > 18) {
+    }
+    if (!minAgeRestriction|| minAgeRestriction < 1 || minAgeRestriction > 18) {
         errors.errorsMessages.push({message: 'Impossible age restriction', field: 'minAgeRestriction'})
-    }}
-    if(publicationDate){if (isNaN(Date.parse(publicationDate)) || publicationDate < video.createdAt){errors.errorsMessages.push({message: 'Impossible date change', field: 'publicationDate'})}}
+    }
+    if (!publicationDate|| isNaN(Date.parse(publicationDate)) || publicationDate < video.createdAt){errors.errorsMessages.push({message: 'Impossible date change', field: 'publicationDate'})}
+    if (!canBeDownloaded || typeof canBeDownloaded != "boolean"){
+        errors.errorsMessages.push({message: 'Impossible value', field: 'canBeDownloaded'})
+    }
+
 
     if (errors.errorsMessages.length){
         res.status(400).send(errors)
