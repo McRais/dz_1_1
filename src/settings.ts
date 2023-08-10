@@ -10,6 +10,11 @@ type RequestWithBodyAndParams<P,B> = Request<P, {}, B, {}>
 function resolutionValidator(array:any) {
     return array.length !== new Set(array).size;
 }
+function isIsoDate(str:string) {
+    if (!/\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}Z/.test(str)) return false;
+    const d = new Date(str);
+    return d instanceof Date && !isNaN(d.getTime()) && d.toISOString()===str; // valid date
+}
 
 export type VideoType = {
     id: number,
@@ -206,7 +211,8 @@ app.put('/videos/:id', (req: RequestWithBodyAndParams<{id:number},{
     if (!minAgeRestriction|| minAgeRestriction < 1 || minAgeRestriction > 18) {
         errors.errorsMessages.push({message: 'Impossible age restriction', field: 'minAgeRestriction'})
     }
-    if (!publicationDate|| isNaN(Date.parse(publicationDate)) || publicationDate < video.createdAt){errors.errorsMessages.push({message: 'Impossible date change', field: 'publicationDate'})}
+    if (!publicationDate || !isIsoDate(publicationDate)){errors.errorsMessages.push({message: 'Impossible date change', field: 'publicationDate'})}
+
     if (!canBeDownloaded || typeof canBeDownloaded != "boolean"){
         errors.errorsMessages.push({message: 'Impossible value', field: 'canBeDownloaded'})
     }
