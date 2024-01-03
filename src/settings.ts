@@ -16,7 +16,7 @@ function isIsoDate(str:string) {
     return d instanceof Date && !isNaN(d.getTime()) && d.toISOString()===str; // valid date
 }
 
-export type VideoType = {
+type VideoType = {
     id: number,
     title: string,
     author: string,
