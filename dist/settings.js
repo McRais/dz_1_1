@@ -162,7 +162,7 @@ exports.app.put('/videos/:id', (req, res) => {
     if (!publicationDate || !isIsoDate(publicationDate)) {
         errors.errorsMessages.push({ message: 'Impossible date change', field: 'publicationDate' });
     }
-    if (!canBeDownloaded) {
+    if (!canBeDownloaded || typeof canBeDownloaded != "boolean") {
         errors.errorsMessages.push({ message: 'Impossible value', field: 'canBeDownloaded' });
     }
     if (errors.errorsMessages.length) {
