@@ -213,7 +213,7 @@ app.put('/videos/:id', (req: RequestWithBodyAndParams<{id:number},{
     }
     if (!publicationDate || !isIsoDate(publicationDate)){errors.errorsMessages.push({message: 'Impossible date change', field: 'publicationDate'})}
 
-    if (!canBeDownloaded || typeof canBeDownloaded != "boolean"){
+    if (!canBeDownloaded){
         errors.errorsMessages.push({message: 'Impossible value', field: 'canBeDownloaded'})
     }
 
