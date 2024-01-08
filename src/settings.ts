@@ -10,13 +10,13 @@ export type RequestWithBodyAndParams<P,B> = Request<P, {}, B, {}>
 function resolutionValidator(array:any) {
     return array.length !== new Set(array).size;
 }
-export function isIsoDate(str:string) {
+function isIsoDate(str:string) {                                        // validate the Date
     if (!/\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}Z/.test(str)) return false;
     const d = new Date(str);
-    return d instanceof Date && !isNaN(d.getTime()) && d.toISOString()===str; // valid date
+    return !isNaN(d.getTime()) && d.toISOString()===str;
 }
 
-export type VideoType = {
+ type VideoType = {
     id: number,
     title: string,
     author: string,
@@ -27,7 +27,7 @@ export type VideoType = {
     availableResolutions: AvailableResolutions[] | null
 }
 
-export enum AvailableResolutions{
+enum AvailableResolutions{
     P144 = 'P144',
     P240 = 'P240',
     P360 = 'P360',
@@ -41,7 +41,7 @@ export enum AvailableResolutions{
 
 //videos.length = 0
 
-export const videos: VideoType[]= [
+const videos: VideoType[]= [
     {
         "id": 0,
         "title": "string",
@@ -67,6 +67,7 @@ export const videos: VideoType[]= [
         ]
     }
 ]
+
 //testing, delete all videos
 app.delete('/testing/all-data', (req: Request, res: Response) => {
     videos.length = 0
