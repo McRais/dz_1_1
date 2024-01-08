@@ -20,4 +20,4 @@ describe('/videos', () => {
         await request(app).get('/videos/').expect([])
     })
 
-}
+})
