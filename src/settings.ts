@@ -3,20 +3,20 @@ import express, {Request, Response} from "express";
 export const app = express()
 app.use(express.json())
 
-type RequestWithParams<P> = Request<P, {}, {}, {}>;
-type RequestWithBody<B> = Request<{}, {}, B, {}>
-type RequestWithBodyAndParams<P,B> = Request<P, {}, B, {}>
+export type RequestWithParams<P> = Request<P, {}, {}, {}>;
+export type RequestWithBody<B> = Request<{}, {}, B, {}>
+export type RequestWithBodyAndParams<P,B> = Request<P, {}, B, {}>
 
 function resolutionValidator(array:any) {
     return array.length !== new Set(array).size;
 }
-function isIsoDate(str:string) {
+export function isIsoDate(str:string) {
     if (!/\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}Z/.test(str)) return false;
     const d = new Date(str);
     return d instanceof Date && !isNaN(d.getTime()) && d.toISOString()===str; // valid date
 }
 
-type VideoType = {
+export type VideoType = {
     id: number,
     title: string,
     author: string,
@@ -27,7 +27,7 @@ type VideoType = {
     availableResolutions: AvailableResolutions[] | null
 }
 
-enum AvailableResolutions{
+export enum AvailableResolutions{
     P144 = 'P144',
     P240 = 'P240',
     P360 = 'P360',
@@ -41,7 +41,7 @@ enum AvailableResolutions{
 
 //videos.length = 0
 
-const videos: VideoType[]= [
+export const videos: VideoType[]= [
     {
         "id": 0,
         "title": "string",
