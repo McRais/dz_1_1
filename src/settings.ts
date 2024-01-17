@@ -3,9 +3,9 @@ import express, {Request, Response} from "express";
 export const app = express()
 app.use(express.json())
 
-export type RequestWithParams<P> = Request<P, {}, {}, {}>;
-export type RequestWithBody<B> = Request<{}, {}, B, {}>
-export type RequestWithBodyAndParams<P,B> = Request<P, {}, B, {}>
+type RequestWithParams<P> = Request<P, {}, {}, {}>;
+type RequestWithBody<B> = Request<{}, {}, B, {}>
+type RequestWithBodyAndParams<P,B> = Request<P, {}, B, {}>
 
 function resolutionValidator(array:any) {
     return array.length !== new Set(array).size;
